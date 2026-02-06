@@ -1,0 +1,457 @@
+/* ===== 现代化文件博客美化样式 ===== */
+/* 作者：Hexo美化助手 */
+/* 版本：1.0 - 专注设计感与实用性 */
+
+:root {
+    /* 现代色彩系统 - 蓝绿色调 */
+    --color-primary: #3498db;
+    --color-primary-dark: #2980b9;
+    --color-secondary: #2ecc71;
+    --color-accent: #9b59b6;
+    --color-danger: #e74c3c;
+    --color-warning: #f39c12;
+    
+    /* 中性色 */
+    --color-light: #f8f9fa;
+    --color-dark: #2c3e50;
+    --color-gray: #6c757d;
+    --color-border: #e9ecef;
+    
+    /* 阴影系统 */
+    --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+    --shadow-md: 0 5px 15px rgba(0,0,0,0.08);
+    --shadow-lg: 0 10px 30px rgba(0,0,0,0.12);
+    --shadow-hover: 0 15px 35px rgba(0,0,0,0.15);
+    
+    /* 圆角系统 */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --radius-xl: 30px;
+    
+    /* 间距系统 */
+    --space-xs: 0.5rem;
+    --space-sm: 1rem;
+    --space-md: 1.5rem;
+    --space-lg: 2.5rem;
+    --space-xl: 4rem;
+}
+
+/* ===== 1. 基础重置与全局样式 ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+    color: var(--color-dark);
+    line-height: 1.7;
+    min-height: 100vh;
+    padding-bottom: var(--space-xl);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-md);
+}
+
+/* ===== 2. 头部与导航栏美化 ===== */
+.site-header {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+    color: white;
+    padding: var(--space-lg) 0;
+    margin-bottom: var(--space-xl);
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    position: relative;
+    overflow: hidden;
+}
+
+.site-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--color-secondary), var(--color-warning));
+}
+
+.site-title {
+    font-size: 2.8rem;
+    font-weight: 800;
+    margin-bottom: var(--space-xs);
+    text-align: center;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    letter-spacing: -0.5px;
+}
+
+.site-subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+    font-weight: 300;
+}
+
+/* 导航栏样式 */
+.main-nav {
+    background: white;
+    border-radius: var(--radius-md);
+    padding: var(--space-sm) var(--space-md);
+    margin: var(--space-md) auto 0;
+    max-width: 900px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+}
+
+.nav-link {
+    color: var(--color-gray);
+    text-decoration: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: var(--radius-xl);
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-link:hover {
+    background: var(--color-primary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.nav-link.active {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+    color: white;
+}
+
+/* ===== 3. 主要内容区域美化 ===== */
+.main-content {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl);
+    box-shadow: var(--shadow-md);
+    margin-bottom: var(--space-xl);
+}
+
+.section-title {
+    font-size: 1.8rem;
+    color: var(--color-dark);
+    margin-bottom: var(--space-lg);
+    padding-bottom: var(--space-sm);
+    border-bottom: 2px solid var(--color-border);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.section-title::before {
+    content: '';
+    width: 6px;
+    height: 24px;
+    background: var(--color-primary);
+    border-radius: 3px;
+}
+
+/* ===== 4. 功能特性卡片 ===== */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-md);
+    margin: var(--space-lg) 0;
+}
+
+.feature-card {
+    background: var(--color-light);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
+    transition: all 0.3s ease;
+    border: 1px solid var(--color-border);
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--color-primary);
+}
+
+.feature-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--color-primary), var(--color-secondary));
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: var(--space-md);
+    display: inline-block;
+}
+
+.feature-card h3 {
+    color: var(--color-dark);
+    font-size: 1.3rem;
+    margin-bottom: var(--space-sm);
+    font-weight: 700;
+}
+
+.feature-card p {
+    color: var(--color-gray);
+    font-size: 0.95rem;
+}
+
+/* ===== 5. 快速开始区域美化 ===== */
+.quick-start {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-md);
+    margin: var(--space-xl) 0;
+}
+
+.quick-start-card {
+    background: linear-gradient(135deg, #f8f9fa 0%, white 100%);
+    border-radius: var(--radius-md);
+    padding: var(--space-lg);
+    text-align: center;
+    border: 1px solid var(--color-border);
+    transition: all 0.3s ease;
+}
+
+.quick-start-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--color-primary);
+}
+
+.quick-start-card h3 {
+    color: var(--color-dark);
+    font-size: 1.4rem;
+    margin-bottom: var(--space-sm);
+}
+
+.quick-start-card p {
+    color: var(--color-gray);
+    margin-bottom: var(--space-md);
+    font-size: 0.95rem;
+}
+
+/* ===== 6. 文件列表美化 ===== */
+.file-list-section {
+    margin: var(--space-xl) 0;
+}
+
+.files-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-md);
+    margin-top: var(--space-md);
+}
+
+.file-card {
+    background: white;
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    border: 1px solid var(--color-border);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.file-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--color-primary);
+}
+
+.file-icon {
+    font-size: 2.2rem;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    border-radius: var(--radius-md);
+    flex-shrink: 0;
+}
+
+.file-info {
+    flex: 1;
+}
+
+.file-name {
+    font-weight: 600;
+    color: var(--color-dark);
+    margin-bottom: 4px;
+    font-size: 1.05rem;
+}
+
+.file-meta {
+    display: flex;
+    gap: var(--space-sm);
+    font-size: 0.85rem;
+    color: var(--color-gray);
+    flex-wrap: wrap;
+}
+
+.file-type {
+    background: var(--color-light);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+
+.file-link {
+    display: inline-block;
+    padding: 6px 16px;
+    background: var(--color-primary);
+    color: white;
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+    margin-top: var(--space-sm);
+}
+
+.file-link:hover {
+    background: var(--color-primary-dark);
+    transform: scale(1.05);
+}
+
+/* ===== 7. 按钮美化 ===== */
+.btn {
+    display: inline-block;
+    padding: 0.9rem 2rem;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+    color: white;
+    text-decoration: none;
+    border-radius: var(--radius-xl);
+    font-weight: 700;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    letter-spacing: 0.3px;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, var(--color-secondary), #27ae60);
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(135deg, #27ae60, var(--color-secondary));
+}
+
+.btn-full {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    margin: var(--space-md) auto;
+}
+
+/* ===== 8. 页脚美化 ===== */
+.site-footer {
+    text-align: center;
+    padding: var(--space-xl) 0;
+    color: var(--color-gray);
+    border-top: 1px solid var(--color-border);
+    margin-top: var(--space-xl);
+    font-size: 0.95rem;
+}
+
+.site-footer a {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.site-footer a:hover {
+    text-decoration: underline;
+}
+
+/* ===== 9. 响应式设计 ===== */
+@media (max-width: 768px) {
+    .site-title {
+        font-size: 2.2rem;
+    }
+    
+    .site-subtitle {
+        font-size: 1rem;
+    }
+    
+    .main-nav {
+        flex-direction: column;
+        align-items: center;
+        padding: var(--space-sm);
+    }
+    
+    .nav-link {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .main-content {
+        padding: var(--space-lg);
+    }
+    
+    .features-grid,
+    .quick-start,
+    .files-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+    }
+}
+
+/* ===== 10. 动画效果 ===== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.feature-card, .quick-start-card, .file-card {
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.feature-card:nth-child(2) { animation-delay: 0.1s; }
+.feature-card:nth-child(3) { animation-delay: 0.2s; }
+.quick-start-card:nth-child(2) { animation-delay: 0.1s; }
+.file-card:nth-child(2) { animation-delay: 0.1s; }
+.file-card:nth-child(3) { animation-delay: 0.2s; }
