@@ -1,32 +1,172 @@
-extends includes/layout.pug
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>�ļ��ϴ� | 文件资源博客</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: #f5f5f5;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 40px 20px;
+      margin-bottom: 30px;
+      border-radius: 0 0 20px 20px;
+    }
+    
+    header h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+    
+    nav {
+      background: white;
+      padding: 15px 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+    
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    
+    nav a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 5px 10px;
+      border-radius: 5px;
+      transition: all 0.3s;
+    }
+    
+    nav a:hover {
+      background: #667eea;
+      color: white;
+    }
+    
+    .content {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+      border-top: 1px solid #e0e0e0;
+      margin-top: 30px;
+    }
+    
+    @media (max-width: 768px) {
+      .container {
+        padding: 10px;
+      }
+      
+      header h1 {
+        font-size: 2em;
+      }
+      
+      nav ul {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .content {
+        padding: 20px;
+      }
+    }
+  </style>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body>
+  <div class="container">
+    <header>
+      <h1>文件资源博客</h1>
+      <p>支持文件上传和展示</p>
+    </header>
+    
+    <nav>
+      <ul>
+        <li><a href="/">首页</a></li>
+        <li><a href="/files/">文件库</a></li>
+        <li><a href="/files/upload/">上传文件</a></li>
+        <li><a href="/help/">帮助</a></li>
+        <li><a href="/archives/">归档</a></li>
+        <li><a href="/categories/">分类</a></li>
+        <li><a href="/tags/">标签</a></li>
+      </ul>
+    </nav>
+    
+    <div class="content">
+      <h1 id="�l��ϴ�"><a href="#�l��ϴ�" class="headerlink" title="�ļ��ϴ�"></a>�ļ��ϴ�</h1><p>����Hexo�Ǿ�̬���ͣ��ļ��ϴ�������Ҫ����ĺ��֧�֡�Ŀǰ��������ͨ�����·�ʽ�ϴ��ļ���</p>
+<ol>
+<li>���ļ����� <code>source/uploads</code> Ŀ¼</li>
+<li>���� <code>hexo generate</code> �������ɲ���</li>
+<li>���ļ��б�ҳ���в鿴</li>
+</ol>
+<p>���ߣ�������ʹ�����±���ģ���ϴ���ע�⣺�ⲻ�������ϴ��ļ�����������ʾ����</p>
+<form id="upload-form">
+  <div>
+    <label for="file-name">�ļ����ƣ�</label>
+    <input type="text" id="file-name" required>
+  </div>
+  <div>
+    <label for="file-type">�ļ����ͣ�</label>
+    <select id="file-type" required>
+      <option value="pdf">PDF</option>
+      <option value="doc">Word</option>
+      <option value="xls">Excel</option>
+      <option value="ppt">PPT</option>
+      <option value="image">ͼƬ</option>
+    </select>
+  </div>
+  <div>
+    <label for="file-description">�ļ�������</label>
+    <textarea id="file-description"></textarea>
+  </div>
+  <div>
+    <label for="file-upload">ѡ���ļ���</label>
+    <input type="file" id="file-upload">
+  </div>
+  <button type="submit">�ύ</button>
+</form>
 
-block content
-  - const noCardLayout = ['shuoshuo', '404'].includes(page.type) ? 'nc' : ''
-  - var commentsJsLoad = false
-
-  mixin commentLoad
-    if page.comments !== false && theme.comments.use
-      - commentsJsLoad = true
-      !=partial('includes/third-party/comments/index', {}, {cache: true})
-
-  #page(class=noCardLayout)
-    if top_img === false && page.title
-      .page-title= page.title
-
-    case page.type
-      when 'tags'
-        include includes/page/tags.pug
-        +commentLoad
-      when 'link'
-        include includes/page/flink.pug
-        +commentLoad
-      when 'categories'
-        include includes/page/categories.pug
-        +commentLoad
-      when '404'
-        include includes/page/404.pug
-      when 'shuoshuo'
-        include includes/page/shuoshuo.pug
-      default
-        include includes/page/default-page.pug
-        +commentLoad
+<script>
+document.getElementById('upload-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  alert('����Hexo�Ǿ�̬���ͣ��ļ��ϴ�������Ҫ���֧�֡��뽫�ļ��ֶ����� source/uploads Ŀ¼��');
+});
+</script>
+    </div>
+    
+    <footer>
+      <p>&copy; 2026 lyluchao | 文件资源博客</p>
+      <p>Powered by Hexo</p>
+    </footer>
+  </div>
+</body>
+</html>
