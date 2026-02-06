@@ -1,28 +1,5 @@
 {
-  "files": [
-    {
-      "id": 1,
-      "name": "hexo-tutorial.pdf",
-      "type": "pdf",
-      "category": "pdf",
-      "size": "15 KB",
-      "date": "2024-02-06",
-      "downloads": 0,
-      "description": "Hexo博客教程",
-      "url": "/uploads/hexo-tutorial.pdf",
-      "icon": "📕"
-    },
-    {
-      "id": 2,
-      "name": "example.txt",
-      "type": "txt",
-      "category": "txt",
-      "size": "1 KB",
-      "date": "2024-02-06",
-      "downloads": 0,
-      "description": "示例文本文件",
-      "url": "/uploads/example.txt",
-      "icon": "📝"
-    }
-  ]
+  "files": [],
+  "total": 0,
+  "lastUpdated": "2026-02-06T15:36:33.725Z"
 }
