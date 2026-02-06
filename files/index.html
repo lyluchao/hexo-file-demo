@@ -7,7 +7,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://lyluchao.github.io/hexo-file-demo/img/butterfly-icon.png">
 <meta property="article:published_time" content="2024-02-05T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-02-06T15:30:53.013Z">
+<meta property="article:modified_time" content="2026-02-06T15:47:17.768Z">
 <meta property="article:author" content="lyluchao">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://lyluchao.github.io/hexo-file-demo/img/butterfly-icon.png"><script type="application/ld+json"></script><link rel="shortcut icon" href="/hexo-file-demo/img/favicon.png"><link rel="canonical" href="https://lyluchao.github.io/hexo-file-demo/files/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/hexo-file-demo/css/index.css?v=5.5.4"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
@@ -334,43 +334,15 @@
 </style>
 
 <script>
-// 修复路径：使用正确的JSON文件路径
+// 从JSON文件加载文件数据 - 修复引号问题
 async function loadFileData() {
   try {
-    // 尝试多种可能的路径
-    const possiblePaths = [
-      '/data/files.json',
-      '/hexo-file-demo/data/files.json',
-      'data/files.json',
-      './data/files.json'
-    ];
-    
-    let data = null;
-    let lastError = null;
-    
-    // 尝试所有可能的路径
-    for (const path of possiblePaths) {
-      try {
-        console.log(`尝试加载: ${path}`);
-        const response = await fetch(path);
-        if (response.ok) {
-          data = await response.json();
-          console.log(`成功从 ${path} 加载数据`);
-          break;
-        }
-      } catch (error) {
-        lastError = error;
-        console.log(`从 ${path} 加载失败:`, error.message);
-      }
+    const response = await fetch('/data/files.json');
+    if (!response.ok) {
+      throw new Error('网络响应不正常');
     }
-    
-    if (data && data.files) {
-      return data.files;
-    } else {
-      // 如果所有路径都失败，返回示例数据
-      console.warn('使用示例数据');
-      return getExampleData();
-    }
+    const data = await response.json();
+    return data.files || [];
   } catch (error) {
     console.error('加载文件数据失败:', error);
     return getExampleData();
@@ -403,6 +375,54 @@ function getExampleData() {
       description: '文档模板示例',
       url: '/uploads/example.docx',
       icon: '📘'
+    },
+    {
+      id: 3,
+      name: '数据分析报告.xlsx',
+      type: 'excel',
+      category: 'excel',
+      size: '3.1 MB',
+      date: '2024-01-15',
+      downloads: 89,
+      description: '年度数据分析',
+      url: '/uploads/analysis.xlsx',
+      icon: '📊'
+    },
+    {
+      id: 4,
+      name: '演示文稿.pptx',
+      type: 'ppt',
+      category: 'ppt',
+      size: '4.2 MB',
+      date: '2024-01-10',
+      downloads: 156,
+      description: '产品介绍演示',
+      url: '/uploads/presentation.pptx',
+      icon: '🎯'
+    },
+    {
+      id: 5,
+      name: '项目截图.zip',
+      type: 'archive',
+      category: 'archive',
+      size: '15.7 MB',
+      date: '2024-01-05',
+      downloads: 67,
+      description: '项目截图压缩包',
+      url: '/uploads/screenshots.zip',
+      icon: '📦'
+    },
+    {
+      id: 6,
+      name: '开发指南.md',
+      type: 'code',
+      category: 'code',
+      size: '356 KB',
+      date: '2024-01-03',
+      downloads: 321,
+      description: '开发最佳实践',
+      url: '/uploads/javascript-guide.md',
+      icon: '📝'
     }
   ];
 }
@@ -451,6 +471,7 @@ function renderFiles(files) {
   }, 0);
   
   const totalDownloads = files.reduce((sum, file) => sum + (file.downloads || 0), 0);
+  const latestDate = files.length > 0 ? files[0].date : '--';
   
   const html = `
     <div class="header">
@@ -468,7 +489,7 @@ function renderFiles(files) {
         <div class="stat-label">总大小(MB)</div>
       </div>
       <div class="stat-card">
-        <div class="stat-number">${files[0]?.date || '--'}</div>
+        <div class="stat-number">${latestDate}</div>
         <div class="stat-label">最新更新</div>
       </div>
       <div class="stat-card">
@@ -485,6 +506,9 @@ function renderFiles(files) {
         <button class="filter-btn" data-category="pdf">PDF文档</button>
         <button class="filter-btn" data-category="word">Word文档</button>
         <button class="filter-btn" data-category="excel">Excel表格</button>
+        <button class="filter-btn" data-category="ppt">PPT演示</button>
+        <button class="filter-btn" data-category="archive">压缩文件</button>
+        <button class="filter-btn" data-category="code">代码文件</button>
       </div>
     </div>
 
@@ -492,7 +516,7 @@ function renderFiles(files) {
       ${files.map(file => {
         const fileIcon = getFileIcon(file.name);
         return `
-          <div class="file-card">
+          <div class="file-card" data-category="${file.category}" data-type="${file.type}">
             <div class="file-header">
               <div class="file-icon" style="color: ${fileIcon.color}">
                 ${fileIcon.icon}
@@ -536,7 +560,8 @@ function setupSearch(files) {
   
   searchInput.addEventListener('input', function() {
     const searchTerm = this.value.toLowerCase().trim();
-    const filteredFiles = filterFiles(files, searchTerm);
+    const category = document.querySelector('.filter-btn.active')?.dataset.category || 'all';
+    const filteredFiles = filterFiles(files, searchTerm, category);
     updateFileGrid(filteredFiles);
   });
 }
@@ -637,7 +662,6 @@ async function initFileLibrary() {
       <div class="error-message">
         <p>❌ 加载文件数据失败</p>
         <p>错误信息: ${error.message}</p>
-        <p>请检查 data/files.json 文件是否存在</p>
         <button onclick="initFileLibrary()" class="btn btn-preview" style="margin-top: 20px;">
           重试
         </button>
@@ -660,4 +684,4 @@ document.addEventListener('DOMContentLoaded', initFileLibrary);
 <li>大型文件建议压缩后上传</li>
 <li>定期清理不需要的文件</li>
 </ul>
-</div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/hexo-file-demo/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/hexo-file-demo/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">lyluchao</div><div class="author-info-description">一个支持文件上传和展示的Hexo博客</div><div class="site-data"><a href="/hexo-file-demo/archives/"><div class="headline">文章</div><div class="length-num">0</div></a><a href="/hexo-file-demo/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/hexo-file-demo/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"></div></div><div class="card-widget card-archives"></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站信息</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">0</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总浏览量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2026-02-06T15:42:19.463Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By lyluchao</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 6.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/hexo-file-demo/js/utils.js?v=5.5.4"></script><script src="/hexo-file-demo/js/main.js?v=5.5.4"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
+</div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/hexo-file-demo/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/hexo-file-demo/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">lyluchao</div><div class="author-info-description">一个支持文件上传和展示的Hexo博客</div><div class="site-data"><a href="/hexo-file-demo/archives/"><div class="headline">文章</div><div class="length-num">0</div></a><a href="/hexo-file-demo/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/hexo-file-demo/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"></div></div><div class="card-widget card-archives"></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站信息</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">0</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总浏览量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2026-02-06T15:48:40.926Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By lyluchao</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 6.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.4</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/hexo-file-demo/js/utils.js?v=5.5.4"></script><script src="/hexo-file-demo/js/main.js?v=5.5.4"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
