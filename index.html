@@ -1,82 +1,1213 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>文件资源博客 - 测试</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: white;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            color: #333;
-        }
-        h1 {
-            color: #667eea;
-            text-align: center;
-        }
-        .status {
-            background: #28a745;
-            color: white;
+    <title>文件资源博客 - 支持文件上传和展示</title>
+    
+<pre><code>&lt;!-- Font Awesome --&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css&quot;&gt;
+
+&lt;style&gt;
+    /* 基础样式 */
+    * &#123;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    &#125;
+    
+    :root &#123;
+        --primary: #3498db;
+        --secondary: #2ecc71;
+        --danger: #e74c3c;
+        --warning: #f39c12;
+        --dark: #2c3e50;
+        --light: #ecf0f1;
+    &#125;
+    
+    body &#123;
+        font-family: &#39;Segoe UI&#39;, Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background: #f5f5f5;
+        min-height: 100vh;
+    &#125;
+    
+    .container &#123;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    &#125;
+    
+    /* 导航栏 */
+    .navbar &#123;
+        background: white;
+        padding: 15px 0;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        position: fixed;
+        width: 100%;
+        top: 0;
+        z-index: 1000;
+    &#125;
+    
+    .nav-container &#123;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    &#125;
+    
+    .logo &#123;
+        font-size: 24px;
+        font-weight: bold;
+        color: var(--primary);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    &#125;
+    
+    .nav-links &#123;
+        display: flex;
+        list-style: none;
+        gap: 20px;
+    &#125;
+    
+    .nav-links a &#123;
+        text-decoration: none;
+        color: var(--dark);
+        padding: 8px 15px;
+        border-radius: 5px;
+        transition: all 0.3s;
+        font-weight: 500;
+    &#125;
+    
+    .nav-links a:hover,
+    .nav-links a.active &#123;
+        background: var(--primary);
+        color: white;
+    &#125;
+    
+    /* 主内容 */
+    .main-content &#123;
+        margin-top: 80px;
+        min-height: calc(100vh - 180px);
+    &#125;
+    
+    /* 页面样式 */
+    .page &#123;
+        display: none;
+        animation: fadeIn 0.5s ease;
+    &#125;
+    
+    .page.active &#123;
+        display: block;
+    &#125;
+    
+    @keyframes fadeIn &#123;
+        from &#123; opacity: 0; &#125;
+        to &#123; opacity: 1; &#125;
+    &#125;
+    
+    /* 首页样式 */
+    .hero &#123;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 80px 30px;
+        border-radius: 15px;
+        text-align: center;
+        margin-bottom: 40px;
+    &#125;
+    
+    .hero h1 &#123;
+        font-size: 3em;
+        margin-bottom: 20px;
+    &#125;
+    
+    .hero p &#123;
+        font-size: 1.2em;
+        opacity: 0.9;
+        max-width: 600px;
+        margin: 0 auto 30px;
+    &#125;
+    
+    .cta-buttons &#123;
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+    &#125;
+    
+    .btn &#123;
+        padding: 12px 30px;
+        border: none;
+        border-radius: 25px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    &#125;
+    
+    .btn-primary &#123;
+        background: white;
+        color: #667eea;
+    &#125;
+    
+    .btn-primary:hover &#123;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    &#125;
+    
+    .btn-secondary &#123;
+        background: var(--secondary);
+        color: white;
+    &#125;
+    
+    /* 功能卡片 */
+    .features &#123;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin: 40px 0;
+    &#125;
+    
+    .feature-card &#123;
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        transition: all 0.3s;
+    &#125;
+    
+    .feature-card:hover &#123;
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    &#125;
+    
+    .feature-icon &#123;
+        font-size: 40px;
+        color: var(--primary);
+        margin-bottom: 20px;
+        text-align: center;
+    &#125;
+    
+    .feature-card h3 &#123;
+        font-size: 1.5em;
+        margin-bottom: 15px;
+        color: var(--dark);
+        text-align: center;
+    &#125;
+    
+    /* 统计卡片 */
+    .stats &#123;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin: 40px 0;
+    &#125;
+    
+    .stat-card &#123;
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        text-align: center;
+        border-top: 4px solid var(--primary);
+    &#125;
+    
+    .stat-number &#123;
+        font-size: 2.5em;
+        font-weight: bold;
+        color: var(--dark);
+        margin-bottom: 5px;
+    &#125;
+    
+    .stat-label &#123;
+        color: #666;
+        font-size: 14px;
+    &#125;
+    
+    /* 页脚 */
+    footer &#123;
+        text-align: center;
+        padding: 30px 20px;
+        color: #666;
+        background: white;
+        border-top: 1px solid #e0e0e0;
+        margin-top: 50px;
+    &#125;
+    
+    /* 文件库样式 */
+    .file-library &#123;
+        max-width: 1200px;
+        margin: 0 auto;
+    &#125;
+    
+    .file-controls &#123;
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        margin-bottom: 30px;
+    &#125;
+    
+    .search-box &#123;
+        width: 100%;
+        padding: 15px 20px;
+        border: 2px solid #e0e0e0;
+        border-radius: 25px;
+        font-size: 16px;
+        margin-bottom: 20px;
+    &#125;
+    
+    .filters &#123;
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+    &#125;
+    
+    .filter-btn &#123;
+        padding: 10px 20px;
+        background: #f8f9fa;
+        border: 2px solid #e0e0e0;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: all 0.3s;
+    &#125;
+    
+    .filter-btn.active &#123;
+        background: var(--primary);
+        color: white;
+        border-color: var(--primary);
+    &#125;
+    
+    .file-grid &#123;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 25px;
+    &#125;
+    
+    .file-card &#123;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        border: 1px solid #eaeaea;
+    &#125;
+    
+    .file-card:hover &#123;
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    &#125;
+    
+    .file-header &#123;
+        padding: 20px;
+        background: #f8f9fa;
+        text-align: center;
+    &#125;
+    
+    .file-icon &#123;
+        font-size: 48px;
+        color: var(--primary);
+    &#125;
+    
+    .file-body &#123;
+        padding: 20px;
+    &#125;
+    
+    .file-title &#123;
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: var(--dark);
+        line-height: 1.4;
+    &#125;
+    
+    .file-desc &#123;
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 15px;
+        line-height: 1.5;
+    &#125;
+    
+    .file-meta &#123;
+        display: flex;
+        justify-content: space-between;
+        color: #888;
+        font-size: 13px;
+        margin-bottom: 15px;
+    &#125;
+    
+    .file-actions &#123;
+        display: flex;
+        gap: 10px;
+    &#125;
+    
+    .file-actions .btn &#123;
+        padding: 8px 15px;
+        font-size: 14px;
+    &#125;
+    
+    /* 上传页面样式 */
+    .upload-container &#123;
+        max-width: 800px;
+        margin: 0 auto;
+    &#125;
+    
+    .upload-steps &#123;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 40px;
+        position: relative;
+    &#125;
+    
+    .upload-steps:before &#123;
+        content: &#39;&#39;;
+        position: absolute;
+        top: 20px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: #e0e0e0;
+        z-index: 1;
+    &#125;
+    
+    .step &#123;
+        text-align: center;
+        position: relative;
+        z-index: 2;
+        flex: 1;
+    &#125;
+    
+    .step-number &#123;
+        width: 40px;
+        height: 40px;
+        background: #ecf0f1;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 10px;
+        font-weight: bold;
+        color: #95a5a6;
+        transition: all 0.3s;
+    &#125;
+    
+    .step.active .step-number &#123;
+        background: var(--primary);
+        color: white;
+    &#125;
+    
+    .upload-area &#123;
+        border: 3px dashed #bdc3c7;
+        border-radius: 15px;
+        padding: 60px 30px;
+        text-align: center;
+        background: #f8f9fa;
+        margin-bottom: 30px;
+        transition: all 0.3s;
+        cursor: pointer;
+    &#125;
+    
+    .upload-area:hover &#123;
+        border-color: var(--primary);
+        background: #f0f8ff;
+    &#125;
+    
+    .upload-icon &#123;
+        font-size: 64px;
+        color: #bdc3c7;
+        margin-bottom: 20px;
+    &#125;
+    
+    .upload-area:hover .upload-icon &#123;
+        color: var(--primary);
+    &#125;
+    
+    /* 响应式设计 */
+    @media (max-width: 768px) &#123;
+        .container &#123;
             padding: 10px;
-            border-radius: 5px;
-            text-align: center;
-            margin: 20px 0;
-        }
-    </style>
+        &#125;
+        
+        .hero h1 &#123;
+            font-size: 2em;
+        &#125;
+        
+        .nav-links &#123;
+            flex-direction: column;
+            gap: 10px;
+        &#125;
+        
+        .cta-buttons &#123;
+            flex-direction: column;
+            align-items: center;
+        &#125;
+        
+        .btn &#123;
+            width: 100%;
+            max-width: 300px;
+            justify-content: center;
+        &#125;
+        
+        .features &#123;
+            grid-template-columns: 1fr;
+        &#125;
+        
+        .file-grid &#123;
+            grid-template-columns: 1fr;
+        &#125;
+    &#125;
+&lt;/style&gt;
+</code></pre>
 </head>
 <body>
-    <div class="container">
-        <h1>🎉 文件资源博客已部署成功！</h1>
-        
-<pre><code>    &lt;div class=&quot;status&quot;&gt;
-        ✅ GitHub Pages 部署成功
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#home" class="logo">
+                <i class="fas fa-archive"></i>
+                <span>文件资源博客</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#home" class="nav-link active">首页</a></li>
+                <li><a href="#files" class="nav-link">文件库</a></li>
+                <li><a href="#upload" class="nav-link">上传</a></li>
+                <li><a href="#help" class="nav-link">帮助</a></li>
+            </ul>
+        </div>
+    </nav>
+
+<pre><code>&lt;!-- 主内容区域 --&gt;
+&lt;div class=&quot;container main-content&quot;&gt;
+    &lt;!-- 首页 --&gt;
+    &lt;div id=&quot;page-home&quot; class=&quot;page active&quot;&gt;
+        &lt;div class=&quot;hero&quot;&gt;
+            &lt;h1&gt;文件资源博客&lt;/h1&gt;
+            &lt;p&gt;一个支持文件上传和展示的Hexo博客，完全免费部署在GitHub Pages上&lt;/p&gt;
+            &lt;div class=&quot;cta-buttons&quot;&gt;
+                &lt;a href=&quot;#files&quot; class=&quot;btn btn-primary&quot;&gt;
+                    &lt;i class=&quot;fas fa-archive&quot;&gt;&lt;/i&gt; 浏览文件库
+                &lt;/a&gt;
+                &lt;a href=&quot;#upload&quot; class=&quot;btn btn-secondary&quot;&gt;
+                    &lt;i class=&quot;fas fa-cloud-upload-alt&quot;&gt;&lt;/i&gt; 上传文件
+                &lt;/a&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class=&quot;features&quot;&gt;
+            &lt;div class=&quot;feature-card&quot;&gt;
+                &lt;div class=&quot;feature-icon&quot;&gt;
+                    &lt;i class=&quot;fas fa-file-upload&quot;&gt;&lt;/i&gt;
+                &lt;/div&gt;
+                &lt;h3&gt;文件上传&lt;/h3&gt;
+                &lt;p&gt;支持PDF、Word、Excel、PPT等多种格式文件上传，最大支持50MB文件&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;feature-card&quot;&gt;
+                &lt;div class=&quot;feature-icon&quot;&gt;
+                    &lt;i class=&quot;fas fa-search&quot;&gt;&lt;/i&gt;
+                &lt;/div&gt;
+                &lt;h3&gt;智能搜索&lt;/h3&gt;
+                &lt;p&gt;快速搜索和筛选文件，按分类、标签、日期等条件查找所需文件&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;feature-card&quot;&gt;
+                &lt;div class=&quot;feature-icon&quot;&gt;
+                    &lt;i class=&quot;fas fa-mobile-alt&quot;&gt;&lt;/i&gt;
+                &lt;/div&gt;
+                &lt;h3&gt;响应式设计&lt;/h3&gt;
+                &lt;p&gt;适配各种设备，在手机、平板、电脑上都能获得良好的浏览体验&lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div class=&quot;stats&quot;&gt;
+            &lt;div class=&quot;stat-card&quot;&gt;
+                &lt;div class=&quot;stat-number&quot;&gt;6+&lt;/div&gt;
+                &lt;div class=&quot;stat-label&quot;&gt;文件类型支持&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;stat-card&quot;&gt;
+                &lt;div class=&quot;stat-number&quot;&gt;50MB&lt;/div&gt;
+                &lt;div class=&quot;stat-label&quot;&gt;单个文件大小&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;stat-card&quot;&gt;
+                &lt;div class=&quot;stat-number&quot;&gt;24/7&lt;/div&gt;
+                &lt;div class=&quot;stat-label&quot;&gt;随时访问&lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;stat-card&quot;&gt;
+                &lt;div class=&quot;stat-number&quot;&gt;免费&lt;/div&gt;
+                &lt;div class=&quot;stat-label&quot;&gt;完全免费使用&lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div style=&quot;background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);&quot;&gt;
+            &lt;h2 style=&quot;margin-bottom: 20px; color: var(--dark);&quot;&gt;最新动态&lt;/h2&gt;
+            &lt;div id=&quot;recent-files&quot;&gt;
+                &lt;div style=&quot;text-align: center; padding: 20px; color: #666;&quot;&gt;
+                    &lt;p&gt;正在加载最新文件...&lt;/p&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
     &lt;/div&gt;
-    
-    &lt;h2&gt;项目信息&lt;/h2&gt;
-    &lt;ul&gt;
-        &lt;li&gt;&lt;strong&gt;项目名称:&lt;/strong&gt; Hexo文件资源博客&lt;/li&gt;
-        &lt;li&gt;&lt;strong&gt;部署分支:&lt;/strong&gt; gh-pages&lt;/li&gt;
-        &lt;li&gt;&lt;strong&gt;访问地址:&lt;/strong&gt; https://lyluchao.github.io/hexo-file-demo/&lt;/li&gt;
-        &lt;li&gt;&lt;strong&gt;GitHub仓库:&lt;/strong&gt; https://github.com/lyluchao/hexo-file-demo&lt;/li&gt;
-    &lt;/ul&gt;
-    
-    &lt;h2&gt;功能特点&lt;/h2&gt;
-    &lt;ul&gt;
-        &lt;li&gt;📁 支持多种文件格式上传和管理&lt;/li&gt;
-        &lt;li&gt;🔍 智能搜索和分类筛选&lt;/li&gt;
-        &lt;li&gt;📱 响应式设计，适配各种设备&lt;/li&gt;
-        &lt;li&gt;🚀 一键部署到GitHub Pages&lt;/li&gt;
-    &lt;/ul&gt;
-    
-    &lt;h2&gt;使用说明&lt;/h2&gt;
-    &lt;ol&gt;
-        &lt;li&gt;上传文件支持：PDF、Word、Excel、PPT、图片等格式&lt;/li&gt;
-        &lt;li&gt;单个文件最大50MB&lt;/li&gt;
-        &lt;li&gt;支持在线预览和下载&lt;/li&gt;
-        &lt;li&gt;文件分类管理&lt;/li&gt;
-    &lt;/ol&gt;
-    
-    &lt;div style=&quot;text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;&quot;&gt;
-        &lt;p&gt;&lt;strong&gt;技术栈:&lt;/strong&gt; Hexo + GitHub Pages + CSS3 + JavaScript&lt;/p&gt;
-        &lt;p&gt;&amp;copy; 2024 lyluchao | 文件资源博客&lt;/p&gt;
+
+    &lt;!-- 文件库页面 --&gt;
+    &lt;div id=&quot;page-files&quot; class=&quot;page&quot;&gt;
+        &lt;div class=&quot;hero&quot;&gt;
+            &lt;h1&gt;&lt;i class=&quot;fas fa-archive&quot;&gt;&lt;/i&gt; 文件资源库&lt;/h1&gt;
+            &lt;p&gt;这里收集了各种有用的文档、资料和资源文件&lt;/p&gt;
+            &lt;a href=&quot;#upload&quot; class=&quot;btn btn-primary&quot;&gt;
+                &lt;i class=&quot;fas fa-cloud-upload-alt&quot;&gt;&lt;/i&gt; 上传文件
+            &lt;/a&gt;
+        &lt;/div&gt;
+
+        &lt;div class=&quot;file-library&quot;&gt;
+            &lt;div class=&quot;stats&quot;&gt;
+                &lt;div class=&quot;stat-card&quot;&gt;
+                    &lt;i class=&quot;fas fa-file-alt&quot;&gt;&lt;/i&gt;
+                    &lt;div class=&quot;stat-number&quot; id=&quot;total-files&quot;&gt;0&lt;/div&gt;
+                    &lt;div class=&quot;stat-label&quot;&gt;总文件数&lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;stat-card&quot;&gt;
+                    &lt;i class=&quot;fas fa-hdd&quot;&gt;&lt;/i&gt;
+                    &lt;div class=&quot;stat-number&quot; id=&quot;total-size&quot;&gt;0&lt;/div&gt;
+                    &lt;div class=&quot;stat-label&quot;&gt;总大小&lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;stat-card&quot;&gt;
+                    &lt;i class=&quot;fas fa-calendar-alt&quot;&gt;&lt;/i&gt;
+                    &lt;div class=&quot;stat-number&quot; id=&quot;last-update&quot;&gt;今天&lt;/div&gt;
+                    &lt;div class=&quot;stat-label&quot;&gt;最后更新&lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;stat-card&quot;&gt;
+                    &lt;i class=&quot;fas fa-download&quot;&gt;&lt;/i&gt;
+                    &lt;div class=&quot;stat-number&quot; id=&quot;total-downloads&quot;&gt;0&lt;/div&gt;
+                    &lt;div class=&quot;stat-label&quot;&gt;总下载次数&lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div class=&quot;file-controls&quot;&gt;
+                &lt;input type=&quot;text&quot; class=&quot;search-box&quot; id=&quot;search-input&quot; placeholder=&quot;🔍 搜索文件名或描述...&quot;&gt;
+                &lt;div class=&quot;filters&quot;&gt;
+                    &lt;button class=&quot;filter-btn active&quot; data-category=&quot;all&quot;&gt;全部文件&lt;/button&gt;
+                    &lt;button class=&quot;filter-btn&quot; data-category=&quot;pdf&quot;&gt;
+                        &lt;i class=&quot;fas fa-file-pdf&quot;&gt;&lt;/i&gt; PDF文档
+                    &lt;/button&gt;
+                    &lt;button class=&quot;filter-btn&quot; data-category=&quot;office&quot;&gt;
+                        &lt;i class=&quot;fas fa-file-word&quot;&gt;&lt;/i&gt; Office文档
+                    &lt;/button&gt;
+                    &lt;button class=&quot;filter-btn&quot; data-category=&quot;image&quot;&gt;
+                        &lt;i class=&quot;fas fa-file-image&quot;&gt;&lt;/i&gt; 图片文件
+                    &lt;/button&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div class=&quot;file-grid&quot; id=&quot;file-list&quot;&gt;
+                &lt;div style=&quot;text-align: center; padding: 50px; color: #999; grid-column: 1 / -1;&quot;&gt;
+                    &lt;i class=&quot;fas fa-folder-open&quot; style=&quot;font-size: 48px; margin-bottom: 20px;&quot;&gt;&lt;/i&gt;
+                    &lt;p&gt;正在加载文件列表...&lt;/p&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- 上传页面 --&gt;
+    &lt;div id=&quot;page-upload&quot; class=&quot;page&quot;&gt;
+        &lt;div class=&quot;hero&quot;&gt;
+            &lt;h1&gt;&lt;i class=&quot;fas fa-cloud-upload-alt&quot;&gt;&lt;/i&gt; 文件上传&lt;/h1&gt;
+            &lt;p&gt;选择您要上传的文件，支持 PDF、Word、Excel、PPT、图片等多种格式&lt;/p&gt;
+        &lt;/div&gt;
+
+        &lt;div class=&quot;upload-container&quot;&gt;
+            &lt;div class=&quot;upload-steps&quot;&gt;
+                &lt;div class=&quot;step active&quot; id=&quot;step1&quot;&gt;
+                    &lt;div class=&quot;step-number&quot;&gt;1&lt;/div&gt;
+                    &lt;div class=&quot;step-title&quot;&gt;选择文件&lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;step&quot; id=&quot;step2&quot;&gt;
+                    &lt;div class=&quot;step-number&quot;&gt;2&lt;/div&gt;
+                    &lt;div class=&quot;step-title&quot;&gt;填写信息&lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;step&quot; id=&quot;step3&quot;&gt;
+                    &lt;div class=&quot;step-number&quot;&gt;3&lt;/div&gt;
+                    &lt;div class=&quot;step-title&quot;&gt;完成上传&lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;div id=&quot;step1-content&quot;&gt;
+                &lt;div class=&quot;upload-area&quot; id=&quot;dropArea&quot;&gt;
+                    &lt;div class=&quot;upload-icon&quot;&gt;
+                        &lt;i class=&quot;fas fa-cloud-upload-alt&quot;&gt;&lt;/i&gt;
+                    &lt;/div&gt;
+                    &lt;h3&gt;拖放文件到此处或点击上传&lt;/h3&gt;
+                    &lt;p&gt;支持 PDF, Word, Excel, PPT, 图片, 压缩包等格式&lt;/p&gt;
+                    &lt;p&gt;单个文件最大限制: &lt;strong&gt;50MB&lt;/strong&gt;&lt;/p&gt;
+                    &lt;input type=&quot;file&quot; id=&quot;fileInput&quot; multiple hidden&gt;
+                    &lt;button class=&quot;btn btn-primary&quot; onclick=&quot;document.getElementById(&#39;fileInput&#39;).click()&quot;&gt;
+                        &lt;i class=&quot;fas fa-folder-open&quot;&gt;&lt;/i&gt; 选择文件
+                    &lt;/button&gt;
+                &lt;/div&gt;
+
+                &lt;div id=&quot;filePreview&quot; style=&quot;display: none; margin-top: 30px;&quot;&gt;
+                    &lt;h3&gt;已选择的文件&lt;/h3&gt;
+                    &lt;div id=&quot;selectedFiles&quot; style=&quot;background: white; border-radius: 10px; border: 1px solid #e0e0e0; padding: 15px;&quot;&gt;
+                        &lt;!-- 文件列表会动态显示在这里 --&gt;
+                    &lt;/div&gt;
+                    &lt;div style=&quot;display: flex; gap: 15px; justify-content: flex-end; margin-top: 20px;&quot;&gt;
+                        &lt;button class=&quot;btn&quot; onclick=&quot;clearFiles()&quot; style=&quot;background: #95a5a6; color: white;&quot;&gt;
+                            &lt;i class=&quot;fas fa-times&quot;&gt;&lt;/i&gt; 清除所有
+                        &lt;/button&gt;
+                        &lt;button class=&quot;btn btn-primary&quot; onclick=&quot;nextStep()&quot;&gt;
+                            下一步 &lt;i class=&quot;fas fa-arrow-right&quot;&gt;&lt;/i&gt;
+                        &lt;/button&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;div style=&quot;background: #f8f9fa; padding: 25px; border-radius: 10px; margin-top: 30px;&quot;&gt;
+            &lt;h4&gt;&lt;i class=&quot;fas fa-lightbulb&quot;&gt;&lt;/i&gt; 上传说明&lt;/h4&gt;
+            &lt;ul style=&quot;list-style: none; padding: 0;&quot;&gt;
+                &lt;li&gt;✓ 支持的文件格式：PDF, Word, Excel, PPT, 图片(JPG/PNG/GIF), 压缩包(ZIP/RAR)&lt;/li&gt;
+                &lt;li&gt;✓ 单个文件大小不能超过50MB&lt;/li&gt;
+                &lt;li&gt;✓ 请确保您有上传文件的权限&lt;/li&gt;
+                &lt;li&gt;✓ 请勿上传侵权或非法内容&lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- 帮助页面 --&gt;
+    &lt;div id=&quot;page-help&quot; class=&quot;page&quot;&gt;
+        &lt;div class=&quot;hero&quot;&gt;
+            &lt;h1&gt;&lt;i class=&quot;fas fa-question-circle&quot;&gt;&lt;/i&gt; 帮助文档&lt;/h1&gt;
+            &lt;p&gt;常见问题和使用说明&lt;/p&gt;
+        &lt;/div&gt;
+
+        &lt;div style=&quot;background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);&quot;&gt;
+            &lt;h2&gt;常见问题&lt;/h2&gt;
+            
+            &lt;h3&gt;如何上传文件？&lt;/h3&gt;
+            &lt;p&gt;1. 点击导航栏中的&quot;上传&quot;&lt;/p&gt;
+            &lt;p&gt;2. 拖放文件到上传区域或点击选择文件&lt;/p&gt;
+            &lt;p&gt;3. 填写文件信息（名称、描述、分类等）&lt;/p&gt;
+            &lt;p&gt;4. 点击&quot;开始上传&quot;按钮&lt;/p&gt;
+            
+            &lt;h3&gt;支持哪些文件格式？&lt;/h3&gt;
+            &lt;ul&gt;
+                &lt;li&gt;PDF文档 (.pdf)&lt;/li&gt;
+                &lt;li&gt;Word文档 (.doc, .docx)&lt;/li&gt;
+                &lt;li&gt;Excel表格 (.xls, .xlsx)&lt;/li&gt;
+                &lt;li&gt;PowerPoint演示文稿 (.ppt, .pptx)&lt;/li&gt;
+                &lt;li&gt;图片文件 (.jpg, .jpeg, .png, .gif)&lt;/li&gt;
+                &lt;li&gt;压缩文件 (.zip, .rar)&lt;/li&gt;
+                &lt;li&gt;文本文件 (.txt, .md)&lt;/li&gt;
+            &lt;/ul&gt;
+            
+            &lt;h3&gt;文件大小限制是多少？&lt;/h3&gt;
+            &lt;p&gt;单个文件最大为 &lt;strong&gt;50MB&lt;/strong&gt;。如果您的文件超过这个限制，请压缩后上传。&lt;/p&gt;
+            
+            &lt;h3&gt;如何搜索文件？&lt;/h3&gt;
+            &lt;p&gt;在文件库页面，使用搜索框输入文件名或描述关键词，系统会自动筛选。&lt;/p&gt;
+            
+            &lt;h3&gt;可以在线预览文件吗？&lt;/h3&gt;
+            &lt;p&gt;是的，大部分文档文件支持在线预览：&lt;/p&gt;
+            &lt;ul&gt;
+                &lt;li&gt;PDF文件：使用Google Docs预览器&lt;/li&gt;
+                &lt;li&gt;Office文件：使用Microsoft Office在线预览&lt;/li&gt;
+                &lt;li&gt;图片文件：直接在线查看&lt;/li&gt;
+            &lt;/ul&gt;
+            
+            &lt;h2&gt;联系我们&lt;/h2&gt;
+            &lt;p&gt;如果您在使用过程中遇到问题，或者有改进建议，欢迎通过以下方式联系：&lt;/p&gt;
+            &lt;ul&gt;
+                &lt;li&gt;&lt;strong&gt;GitHub仓库&lt;/strong&gt;: &lt;a href=&quot;https://github.com/lyluchao/hexo-file-demo&quot; target=&quot;_blank&quot;&gt;lyluchao/hexo-file-demo&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;&lt;strong&gt;访问地址&lt;/strong&gt;: https://lyluchao.github.io/hexo-file-demo/&lt;/li&gt;
+            &lt;/ul&gt;
+        &lt;/div&gt;
     &lt;/div&gt;
 &lt;/div&gt;
 
+&lt;!-- 页脚 --&gt;
+&lt;footer&gt;
+    &lt;p&gt;&amp;copy; 2024 lyluchao | 文件资源博客&lt;/p&gt;
+    &lt;p&gt;部署在 GitHub Pages | 基于 Hexo 构建&lt;/p&gt;
+    &lt;p style=&quot;margin-top: 10px;&quot;&gt;
+        &lt;a href=&quot;https://github.com/lyluchao/hexo-file-demo&quot; target=&quot;_blank&quot; style=&quot;color: #666; text-decoration: none;&quot;&gt;
+            &lt;i class=&quot;fab fa-github&quot;&gt;&lt;/i&gt; GitHub 仓库
+        &lt;/a&gt;
+    &lt;/p&gt;
+&lt;/footer&gt;
+
+&lt;!-- JavaScript 代码 --&gt;
 &lt;script&gt;
-    console.log(&quot;文件资源博客加载成功！&quot;);
-    console.log(&quot;当前URL:&quot;, window.location.href);
+    // 单页面应用路由
+    document.addEventListener(&#39;DOMContentLoaded&#39;, function() &#123;
+        console.log(&#39;文件资源博客加载完成！&#39;);
+        
+        // 初始化文件数据
+        initFileData();
+        
+        // 设置导航事件
+        setupNavigation();
+        
+        // 设置文件库功能
+        setupFileLibrary();
+        
+        // 设置上传功能
+        setupUpload();
+        
+        // 处理URL哈希
+        handleHashChange();
+    &#125;);
+
+    // 文件数据
+    let fileData = [
+        &#123;
+            id: 1,
+            name: &#39;Hexo博客搭建教程.pdf&#39;,
+            description: &#39;详细的Hexo博客搭建和配置教程，包含主题定制和插件使用&#39;,
+            category: &#39;pdf&#39;,
+            size: &#39;2.3 MB&#39;,
+            date: &#39;2024-01-20&#39;,
+            downloads: 245,
+            icon: &#39;fas fa-file-pdf&#39;,
+            color: &#39;#e74c3c&#39;,
+            url: &#39;#&#39;,
+            preview: &#39;#&#39;
+        &#125;,
+        &#123;
+            id: 2,
+            name: &#39;项目需求规格说明书.docx&#39;,
+            description: &#39;软件开发项目需求文档模板&#39;,
+            category: &#39;office&#39;,
+            size: &#39;1.8 MB&#39;,
+            date: &#39;2024-01-18&#39;,
+            downloads: 128,
+            icon: &#39;fas fa-file-word&#39;,
+            color: &#39;#2b579a&#39;,
+            url: &#39;#&#39;,
+            preview: &#39;#&#39;
+        &#125;,
+        &#123;
+            id: 3,
+            name: &#39;年度数据分析报告.xlsx&#39;,
+            description: &#39;2023年度业务数据分析报告&#39;,
+            category: &#39;office&#39;,
+            size: &#39;3.1 MB&#39;,
+            date: &#39;2024-01-15&#39;,
+            downloads: 89,
+            icon: &#39;fas fa-file-excel&#39;,
+            color: &#39;#217346&#39;,
+            url: &#39;#&#39;,
+            preview: &#39;#&#39;
+        &#125;,
+        &#123;
+            id: 4,
+            name: &#39;产品发布会演示文稿.pptx&#39;,
+            description: &#39;新产品发布演示文稿模板&#39;,
+            category: &#39;office&#39;,
+            size: &#39;4.2 MB&#39;,
+            date: &#39;2024-01-10&#39;,
+            downloads: 156,
+            icon: &#39;fas fa-file-powerpoint&#39;,
+            color: &#39;#d24726&#39;,
+            url: &#39;#&#39;,
+            preview: &#39;#&#39;
+        &#125;,
+        &#123;
+            id: 5,
+            name: &#39;项目截图合集.zip&#39;,
+            description: &#39;项目界面截图和效果图压缩包&#39;,
+            category: &#39;archive&#39;,
+            size: &#39;15.7 MB&#39;,
+            date: &#39;2024-01-05&#39;,
+            downloads: 67,
+            icon: &#39;fas fa-file-archive&#39;,
+            color: &#39;#f39c12&#39;,
+            url: &#39;#&#39;
+        &#125;,
+        &#123;
+            id: 6,
+            name: &#39;JavaScript开发指南.md&#39;,
+            description: &#39;JavaScript最佳实践和代码规范&#39;,
+            category: &#39;code&#39;,
+            size: &#39;356 KB&#39;,
+            date: &#39;2024-01-03&#39;,
+            downloads: 321,
+            icon: &#39;fas fa-file-code&#39;,
+            color: &#39;#3498db&#39;,
+            url: &#39;#&#39;
+        &#125;
+    ];
+
+    // 初始化文件数据
+    function initFileData() &#123;
+        // 从localStorage加载用户上传的文件
+        const userFiles = JSON.parse(localStorage.getItem(&#39;user_uploaded_files&#39;) || &#39;[]&#39;);
+        if (userFiles.length &gt; 0) &#123;
+            fileData = [...userFiles, ...fileData];
+        &#125;
+        
+        // 更新统计信息
+        updateFileStats();
+        
+        // 渲染文件列表
+        renderFileList(fileData);
+        
+        // 渲染最近文件
+        renderRecentFiles();
+    &#125;
+
+    // 设置导航
+    function setupNavigation() &#123;
+        document.querySelectorAll(&#39;.nav-link&#39;).forEach(link =&gt; &#123;
+            link.addEventListener(&#39;click&#39;, function(e) &#123;
+                e.preventDefault();
+                
+                // 更新激活状态
+                document.querySelectorAll(&#39;.nav-link&#39;).forEach(l =&gt; &#123;
+                    l.classList.remove(&#39;active&#39;);
+                &#125;);
+                this.classList.add(&#39;active&#39;);
+                
+                // 隐藏所有页面
+                document.querySelectorAll(&#39;.page&#39;).forEach(page =&gt; &#123;
+                    page.classList.remove(&#39;active&#39;);
+                &#125;);
+                
+                // 显示目标页面
+                const target = this.getAttribute(&#39;href&#39;).substring(1);
+                document.getElementById(`page-$&#123;target&#125;`).classList.add(&#39;active&#39;);
+                
+                // 更新URL哈希
+                window.location.hash = this.getAttribute(&#39;href&#39;);
+            &#125;);
+        &#125;);
+    &#125;
+
+    // 设置文件库功能
+    function setupFileLibrary() &#123;
+        // 搜索功能
+        const searchInput = document.getElementById(&#39;search-input&#39;);
+        if (searchInput) &#123;
+            searchInput.addEventListener(&#39;input&#39;, function() &#123;
+                const filtered = filterAndSearchFiles();
+                renderFileList(filtered);
+            &#125;);
+        &#125;
+        
+        // 分类筛选
+        document.querySelectorAll(&#39;.filter-btn&#39;).forEach(btn =&gt; &#123;
+            btn.addEventListener(&#39;click&#39;, function() &#123;
+                document.querySelectorAll(&#39;.filter-btn&#39;).forEach(b =&gt; b.classList.remove(&#39;active&#39;));
+                this.classList.add(&#39;active&#39;);
+                const filtered = filterAndSearchFiles();
+                renderFileList(filtered);
+            &#125;);
+        &#125;);
+    &#125;
+
+    // 设置上传功能
+    function setupUpload() &#123;
+        const dropArea = document.getElementById(&#39;dropArea&#39;);
+        const fileInput = document.getElementById(&#39;fileInput&#39;);
+        
+        if (!dropArea || !fileInput) return;
+        
+        // 文件选择
+        fileInput.addEventListener(&#39;change&#39;, handleFileSelect);
+        
+        // 拖放功能
+        [&#39;dragenter&#39;, &#39;dragover&#39;, &#39;dragleave&#39;, &#39;drop&#39;].forEach(eventName =&gt; &#123;
+            dropArea.addEventListener(eventName, preventDefaults, false);
+        &#125;);
+        
+        function preventDefaults(e) &#123;
+            e.preventDefault();
+            e.stopPropagation();
+        &#125;
+        
+        [&#39;dragenter&#39;, &#39;dragover&#39;].forEach(eventName =&gt; &#123;
+            dropArea.addEventListener(eventName, () =&gt; &#123;
+                dropArea.style.borderColor = &#39;#3498db&#39;;
+                dropArea.style.background = &#39;#f0f8ff&#39;;
+            &#125;, false);
+        &#125;);
+        
+        [&#39;dragleave&#39;, &#39;drop&#39;].forEach(eventName =&gt; &#123;
+            dropArea.addEventListener(eventName, () =&gt; &#123;
+                dropArea.style.borderColor = &#39;#bdc3c7&#39;;
+                dropArea.style.background = &#39;#f8f9fa&#39;;
+            &#125;, false);
+        &#125;);
+        
+        dropArea.addEventListener(&#39;drop&#39;, handleDrop, false);
+    &#125;
+
+    // 处理文件选择
+    function handleFileSelect(e) &#123;
+        const files = Array.from(e.target.files);
+        addFiles(files);
+    &#125;
+
+    // 处理拖放
+    function handleDrop(e) &#123;
+        const dt = e.dataTransfer;
+        const files = Array.from(dt.files);
+        addFiles(files);
+    &#125;
+
+    // 添加文件
+    let selectedFiles = [];
+    function addFiles(files) &#123;
+        // 验证文件大小
+        const maxSize = 50 * 1024 * 1024; // 50MB
+        const validFiles = files.filter(file =&gt; &#123;
+            if (file.size &gt; maxSize) &#123;
+                alert(`文件 &quot;$&#123;file.name&#125;&quot; 超过50MB限制，已跳过`);
+                return false;
+            &#125;
+            return true;
+        &#125;);
+        
+        if (validFiles.length === 0) return;
+        
+        selectedFiles.push(...validFiles);
+        updateFilePreview();
+        
+        // 显示预览区域
+        document.getElementById(&#39;filePreview&#39;).style.display = &#39;block&#39;;
+    &#125;
+
+    // 更新文件预览
+    function updateFilePreview() &#123;
+        const container = document.getElementById(&#39;selectedFiles&#39;);
+        
+        if (selectedFiles.length === 0) &#123;
+            container.innerHTML = &#39;&lt;div style=&quot;text-align: center; padding: 20px; color: #666;&quot;&gt;请选择文件&lt;/div&gt;&#39;;
+            return;
+        &#125;
+        
+        const html = selectedFiles.map((file, index) =&gt; `
+            &lt;div style=&quot;display: flex; align-items: center; padding: 10px; border-bottom: 1px solid #eee;&quot;&gt;
+                &lt;div style=&quot;font-size: 24px; color: #3498db; margin-right: 15px; width: 40px;&quot;&gt;
+                    &lt;i class=&quot;$&#123;getFileIcon(file.name).icon&#125;&quot;&gt;&lt;/i&gt;
+                &lt;/div&gt;
+                &lt;div style=&quot;flex: 1;&quot;&gt;
+                    &lt;div style=&quot;font-weight: 600; color: #2c3e50;&quot;&gt;$&#123;file.name&#125;&lt;/div&gt;
+                    &lt;div style=&quot;color: #7f8c8d; font-size: 14px;&quot;&gt;$&#123;formatFileSize(file.size)&#125;&lt;/div&gt;
+                &lt;/div&gt;
+                &lt;button onclick=&quot;removeFile($&#123;index&#125;)&quot; style=&quot;background: #e74c3c; color: white; border: none; border-radius: 5px; padding: 5px 10px; cursor: pointer;&quot;&gt;
+                    &lt;i class=&quot;fas fa-times&quot;&gt;&lt;/i&gt; 移除
+                &lt;/button&gt;
+            &lt;/div&gt;
+        `).join(&#39;&#39;);
+        
+        container.innerHTML = html;
+    &#125;
+
+    // 移除文件
+    window.removeFile = function(index) &#123;
+        selectedFiles.splice(index, 1);
+        updateFilePreview();
+        
+        if (selectedFiles.length === 0) &#123;
+            document.getElementById(&#39;filePreview&#39;).style.display = &#39;none&#39;;
+        &#125;
+    &#125;;
+
+    // 清除所有文件
+    window.clearFiles = function() &#123;
+        selectedFiles = [];
+        document.getElementById(&#39;filePreview&#39;).style.display = &#39;none&#39;;
+        document.getElementById(&#39;fileInput&#39;).value = &#39;&#39;;
+    &#125;;
+
+    // 下一步
+    window.nextStep = function() &#123;
+        if (selectedFiles.length === 0) &#123;
+            alert(&#39;请先选择文件&#39;);
+            return;
+        &#125;
+        
+        // 这里可以添加跳转到上传表单的代码
+        alert(&#39;上传功能演示：选择了 &#39; + selectedFiles.length + &#39; 个文件&#39;);
+    &#125;;
+
+    // 获取文件图标
+    function getFileIcon(filename) &#123;
+        const ext = filename.split(&#39;.&#39;).pop().toLowerCase();
+        const icons = &#123;
+            pdf: &#123; icon: &#39;fas fa-file-pdf&#39;, color: &#39;#e74c3c&#39; &#125;,
+            doc: &#123; icon: &#39;fas fa-file-word&#39;, color: &#39;#2b579a&#39; &#125;,
+            docx: &#123; icon: &#39;fas fa-file-word&#39;, color: &#39;#2b579a&#39; &#125;,
+            xls: &#123; icon: &#39;fas fa-file-excel&#39;, color: &#39;#217346&#39; &#125;,
+            xlsx: &#123; icon: &#39;fas fa-file-excel&#39;, color: &#39;#217346&#39; &#125;,
+            ppt: &#123; icon: &#39;fas fa-file-powerpoint&#39;, color: &#39;#d24726&#39; &#125;,
+            pptx: &#123; icon: &#39;fas fa-file-powerpoint&#39;, color: &#39;#d24726&#39; &#125;,
+            jpg: &#123; icon: &#39;fas fa-file-image&#39;, color: &#39;#9b59b6&#39; &#125;,
+            png: &#123; icon: &#39;fas fa-file-image&#39;, color: &#39;#9b59b6&#39; &#125;,
+            gif: &#123; icon: &#39;fas fa-file-image&#39;, color: &#39;#9b59b6&#39; &#125;,
+            zip: &#123; icon: &#39;fas fa-file-archive&#39;, color: &#39;#f39c12&#39; &#125;,
+            rar: &#123; icon: &#39;fas fa-file-archive&#39;, color: &#39;#f39c12&#39; &#125;,
+            md: &#123; icon: &#39;fas fa-file-code&#39;, color: &#39;#3498db&#39; &#125;,
+            txt: &#123; icon: &#39;fas fa-file-alt&#39;, color: &#39;#95a5a6&#39; &#125;
+        &#125;;
+        
+        return icons[ext] || &#123; icon: &#39;fas fa-file&#39;, color: &#39;#7f8c8d&#39; &#125;;
+    &#125;
+
+    // 格式化文件大小
+    function formatFileSize(bytes) &#123;
+        if (bytes === 0) return &#39;0 Bytes&#39;;
+        
+        const k = 1024;
+        const sizes = [&#39;Bytes&#39;, &#39;KB&#39;, &#39;MB&#39;, &#39;GB&#39;];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + &#39; &#39; + sizes[i];
+    &#125;
+
+    // 筛选和搜索文件
+    function filterAndSearchFiles() &#123;
+        const category = document.querySelector(&#39;.filter-btn.active&#39;)?.dataset.category || &#39;all&#39;;
+        const searchTerm = document.getElementById(&#39;search-input&#39;).value.toLowerCase();
+        
+        let filtered = fileData;
+        
+        // 按分类筛选
+        if (category !== &#39;all&#39;) &#123;
+            filtered = filtered.filter(file =&gt; file.category === category);
+        &#125;
+        
+        // 搜索筛选
+        if (searchTerm) &#123;
+            filtered = filtered.filter(file =&gt; 
+                file.name.toLowerCase().includes(searchTerm) || 
+                (file.description &amp;&amp; file.description.toLowerCase().includes(searchTerm))
+            );
+        &#125;
+        
+        return filtered;
+    &#125;
+
+    // 渲染文件列表
+    function renderFileList(files) &#123;
+        const container = document.getElementById(&#39;file-list&#39;);
+        
+        if (!files || files.length === 0) &#123;
+            container.innerHTML = `
+                &lt;div style=&quot;text-align: center; padding: 50px; color: #999; grid-column: 1 / -1;&quot;&gt;
+                    &lt;i class=&quot;fas fa-search&quot; style=&quot;font-size: 48px; margin-bottom: 20px;&quot;&gt;&lt;/i&gt;
+                    &lt;p&gt;没有找到符合条件的文件&lt;/p&gt;
+                &lt;/div&gt;
+            `;
+            return;
+        &#125;
+        
+        const html = files.map(file =&gt; &#123;
+            const fileIcon = file.icon || getFileIcon(file.name).icon;
+            const fileColor = file.color || getFileIcon(file.name).color;
+            
+            return `
+                &lt;div class=&quot;file-card&quot;&gt;
+                    &lt;div class=&quot;file-header&quot;&gt;
+                        &lt;i class=&quot;$&#123;fileIcon&#125;&quot; style=&quot;font-size: 48px; color: $&#123;fileColor&#125;&quot;&gt;&lt;/i&gt;
+                    &lt;/div&gt;
+                    &lt;div class=&quot;file-body&quot;&gt;
+                        &lt;h3 class=&quot;file-title&quot; title=&quot;$&#123;file.name&#125;&quot;&gt;$&#123;file.name&#125;&lt;/h3&gt;
+                        &lt;p class=&quot;file-desc&quot;&gt;$&#123;file.description || &#39;暂无描述&#39;&#125;&lt;/p&gt;
+                        &lt;div class=&quot;file-meta&quot;&gt;
+                            &lt;span&gt;&lt;i class=&quot;fas fa-hdd&quot;&gt;&lt;/i&gt; $&#123;file.size&#125;&lt;/span&gt;
+                            &lt;span&gt;&lt;i class=&quot;fas fa-calendar&quot;&gt;&lt;/i&gt; $&#123;file.date&#125;&lt;/span&gt;
+                            &lt;span&gt;&lt;i class=&quot;fas fa-download&quot;&gt;&lt;/i&gt; $&#123;file.downloads || 0&#125;&lt;/span&gt;
+                        &lt;/div&gt;
+                        &lt;div class=&quot;file-actions&quot;&gt;
+                            $&#123;file.preview &amp;&amp; file.preview !== &#39;#&#39; ? `
+                                &lt;a href=&quot;$&#123;file.preview&#125;&quot; target=&quot;_blank&quot; class=&quot;btn&quot; style=&quot;background: var(--primary); color: white;&quot;&gt;
+                                    &lt;i class=&quot;fas fa-eye&quot;&gt;&lt;/i&gt; 预览
+                                &lt;/a&gt;
+                            ` : &#39;&#39;&#125;
+                            &lt;a href=&quot;$&#123;file.url || &#39;#&#39;&#125;&quot; class=&quot;btn&quot; style=&quot;background: var(--secondary); color: white;&quot;&gt;
+                                &lt;i class=&quot;fas fa-download&quot;&gt;&lt;/i&gt; 下载
+                            &lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            `;
+        &#125;).join(&#39;&#39;);
+        
+        container.innerHTML = html;
+    &#125;
+
+    // 渲染最近文件
+    function renderRecentFiles() &#123;
+        const container = document.getElementById(&#39;recent-files&#39;);
+        if (!container) return;
+        
+        const recentFiles = fileData.slice(0, 3);
+        
+        const html = `
+            &lt;div style=&quot;display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;&quot;&gt;
+                $&#123;recentFiles.map(file =&gt; `
+                    &lt;div style=&quot;background: #f8f9fa; padding: 20px; border-radius: 8px;&quot;&gt;
+                        &lt;div style=&quot;font-size: 24px; color: #3498db; margin-bottom: 10px;&quot;&gt;
+                            &lt;i class=&quot;$&#123;file.icon&#125;&quot;&gt;&lt;/i&gt;
+                        &lt;/div&gt;
+                        &lt;div style=&quot;font-weight: bold; margin-bottom: 5px;&quot;&gt;$&#123;file.name&#125;&lt;/div&gt;
+                        &lt;div style=&quot;font-size: 12px; color: #666; margin-bottom: 10px;&quot;&gt;
+                            $&#123;file.size&#125; • $&#123;file.date&#125;
+                        &lt;/div&gt;
+                        &lt;a href=&quot;#files&quot; class=&quot;nav-link&quot; style=&quot;display: inline-block; padding: 5px 10px; background: var(--primary); color: white; text-decoration: none; border-radius: 5px; font-size: 14px;&quot;&gt;
+                            查看详情
+                        &lt;/a&gt;
+                    &lt;/div&gt;
+                `).join(&#39;&#39;)&#125;
+            &lt;/div&gt;
+        `;
+        
+        container.innerHTML = html;
+    &#125;
+
+    // 更新文件统计
+    function updateFileStats() &#123;
+        const totalSize = fileData.reduce((sum, file) =&gt; &#123;
+            const size = parseFloat(file.size);
+            return sum + (isNaN(size) ? 0 : size);
+        &#125;, 0);
+        
+        const totalDownloads = fileData.reduce((sum, file) =&gt; sum + (file.downloads || 0), 0);
+        
+        // 更新统计显示
+        const totalFilesEl = document.getElementById(&#39;total-files&#39;);
+        const totalSizeEl = document.getElementById(&#39;total-size&#39;);
+        const totalDownloadsEl = document.getElementById(&#39;total-downloads&#39;);
+        const lastUpdateEl = document.getElementById(&#39;last-update&#39;);
+        
+        if (totalFilesEl) totalFilesEl.textContent = fileData.length;
+        if (totalSizeEl) totalSizeEl.textContent = totalSize.toFixed(1) + &#39; MB&#39;;
+        if (totalDownloadsEl) totalDownloadsEl.textContent = totalDownloads;
+        
+        if (lastUpdateEl &amp;&amp; fileData.length &gt; 0) &#123;
+            const latestDate = fileData.reduce((latest, file) =&gt; 
+                new Date(file.date) &gt; new Date(latest) ? file.date : latest, fileData[0].date);
+            lastUpdateEl.textContent = latestDate;
+        &#125;
+    &#125;
+
+    // 处理URL哈希变化
+    function handleHashChange() &#123;
+        const hash = window.location.hash.substring(1) || &#39;home&#39;;
+        const link = document.querySelector(`.nav-link[href=&quot;#$&#123;hash&#125;&quot;]`);
+        if (link) &#123;
+            link.click();
+        &#125;
+    &#125;
+
+    window.addEventListener(&#39;hashchange&#39;, handleHashChange);
 &lt;/script&gt;
 </code></pre>
 </body>
