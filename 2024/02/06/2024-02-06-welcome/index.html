@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>欢迎使用文件资源博客 | 文件资源博客</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background: #f5f5f5;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 40px 20px;
+      margin-bottom: 30px;
+      border-radius: 0 0 20px 20px;
+      text-align: center;
+    }
+    
+    header h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+    
+    .post-header {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    
+    .post-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #e0e0e0;
+      color: #666;
+      font-size: 14px;
+    }
+    
+    .tags {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    
+    .tag {
+      background: #667eea;
+      color: white;
+      padding: 3px 8px;
+      border-radius: 3px;
+      font-size: 12px;
+    }
+    
+    .content {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+    
+    .content h1, .content h2, .content h3 {
+      margin: 20px 0 10px 0;
+      color: #333;
+    }
+    
+    .content p {
+      margin: 15px 0;
+    }
+    
+    .content code {
+      background: #f0f0f0;
+      padding: 2px 5px;
+      border-radius: 3px;
+      font-family: 'Courier New', monospace;
+    }
+    
+    .content pre {
+      background: #2d2d2d;
+      color: #f8f8f2;
+      padding: 15px;
+      border-radius: 5px;
+      overflow-x: auto;
+      margin: 15px 0;
+    }
+    
+    .navigation {
+      display: flex;
+      justify-content: space-between;
+      margin: 30px 0;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .nav-btn {
+      padding: 10px 20px;
+      background: #667eea;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: all 0.3s;
+    }
+    
+    .nav-btn:hover {
+      background: #764ba2;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+      border-top: 1px solid #e0e0e0;
+      margin-top: 30px;
+    }
+    
+    nav {
+      background: white;
+      padding: 15px 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+    
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    nav a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 5px 10px;
+      border-radius: 5px;
+      transition: all 0.3s;
+    }
+    
+    nav a:hover {
+      background: #667eea;
+      color: white;
+    }
+    
+    @media (max-width: 768px) {
+      .container {
+        padding: 10px;
+      }
+      
+      header h1 {
+        font-size: 2em;
+      }
+      
+      .post-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      
+      nav ul {
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .content {
+        padding: 20px;
+      }
+    }
+  </style>
+<meta name="generator" content="Hexo 6.3.0"></head>
+<body>
+  <div class="container">
+    <header>
+      <h1><a href="/" style="color: white; text-decoration: none;">文件资源博客</a></h1>
+      <p>支持文件上传和展示</p>
+    </header>
+    
+    <nav>
+      <ul>
+        <li><a href="/">首页</a></li>
+        <li><a href="/files/">文件库</a></li>
+        <li><a href="/files/upload/">上传文件</a></li>
+        <li><a href="/help/">帮助</a></li>
+        <li><a href="/archives/">归档</a></li>
+        <li><a href="/categories/">分类</a></li>
+        <li><a href="/tags/">标签</a></li>
+      </ul>
+    </nav>
+    
+    <div class="post-header">
+      <h1>欢迎使用文件资源博客</h1>
+      
+        <div class="post-meta">
+          <span>发布日期: 2024-02-06</span>
+          
+            <div class="tags">
+              
+                <span class="tag">教程</span>
+              
+                <span class="tag">指南</span>
+              
+            </div>
+          
+        </div>
+      
+    </div>
+    
+    <div class="content">
+      <h1 id="欢迎使用文件资源博客"><a href="#欢迎使用文件资源博客" class="headerlink" title="欢迎使用文件资源博客"></a>欢迎使用文件资源博客</h1><p>感谢您选择文件资源博客！这是一个专门为文件管理和分享设计的Hexo博客。</p>
+<h2 id="功能特点"><a href="#功能特点" class="headerlink" title="功能特点"></a>功能特点</h2><h3 id="1-文件上传与管理"><a href="#1-文件上传与管理" class="headerlink" title="1. 文件上传与管理"></a>1. 文件上传与管理</h3><ul>
+<li>支持多种文件格式上传</li>
+<li>文件分类和标签管理</li>
+<li>在线预览和下载功能</li>
+</ul>
+<h3 id="2-用户友好的界面"><a href="#2-用户友好的界面" class="headerlink" title="2. 用户友好的界面"></a>2. 用户友好的界面</h3><ul>
+<li>响应式设计，适配各种设备</li>
+<li>直观的文件管理界面</li>
+<li>拖放上传功能</li>
+</ul>
+<h3 id="3-高效的文件组织"><a href="#3-高效的文件组织" class="headerlink" title="3. 高效的文件组织"></a>3. 高效的文件组织</h3><ul>
+<li>智能搜索和筛选</li>
+<li>文件统计信息展示</li>
+<li>批量操作支持</li>
+</ul>
+<h2 id="快速入门"><a href="#快速入门" class="headerlink" title="快速入门"></a>快速入门</h2><h3 id="上传您的第一个文件"><a href="#上传您的第一个文件" class="headerlink" title="上传您的第一个文件"></a>上传您的第一个文件</h3><ol>
+<li>访问 <a href="/files/upload/">文件上传页面</a></li>
+<li>拖放文件到上传区域</li>
+<li>填写文件信息</li>
+<li>点击上传按钮</li>
+</ol>
+<h3 id="浏览文件"><a href="#浏览文件" class="headerlink" title="浏览文件"></a>浏览文件</h3><ol>
+<li>访问 <a href="/files/">文件资源库</a></li>
+<li>使用搜索框查找文件</li>
+<li>点击分类筛选文件</li>
+<li>预览或下载文件</li>
+</ol>
+<h2 id="进阶使用"><a href="#进阶使用" class="headerlink" title="进阶使用"></a>进阶使用</h2><h3 id="文件组织建议"><a href="#文件组织建议" class="headerlink" title="文件组织建议"></a>文件组织建议</h3><ul>
+<li>为文件添加详细的描述</li>
+<li>使用合适的分类和标签</li>
+<li>定期整理和归档旧文件</li>
+</ul>
+<h3 id="性能优化"><a href="#性能优化" class="headerlink" title="性能优化"></a>性能优化</h3><ul>
+<li>压缩大文件后再上传</li>
+<li>使用合适的文件格式</li>
+<li>定期清理不需要的文件</li>
+</ul>
+<h2 id="获取帮助"><a href="#获取帮助" class="headerlink" title="获取帮助"></a>获取帮助</h2><p>如果您在使用过程中遇到问题：</p>
+<ul>
+<li>查看 <a href="/help/">帮助文档</a></li>
+<li>联系技术支持</li>
+<li>查看常见问题解答</li>
+</ul>
+<hr>
+<p>希望您能享受使用文件资源博客的体验！</p>
+<blockquote>
+<p>提示：本博客仍在开发中，欢迎提出宝贵意见和建议。</p>
+</blockquote>
+
+    </div>
+    
+    <footer>
+      <p>&copy; 2026 lyluchao | 文件资源博客</p>
+      <p>Powered by Hexo</p>
+    </footer>
+  </div>
+</body>
+</html>
