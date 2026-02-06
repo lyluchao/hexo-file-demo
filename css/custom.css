@@ -1,0 +1,78 @@
+/* 快速美化样式表 */
+:root {
+    --primary: #3498db;
+    --secondary: #2ecc71;
+    --accent: #9b59b6;
+    --light: #f8f9fa;
+    --dark: #2c3e50;
+    --gray: #6c757d;
+    --shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+/* 全局样式 */
+body {
+    font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background-color: #f5f7fa;
+    color: #333;
+    line-height: 1.7;
+}
+a { color: var(--primary); text-decoration: none; transition: color 0.3s; }
+a:hover { color: var(--accent); }
+
+/* 头部美化 */
+.header-inner {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%) !important;
+    border-radius: 0 0 10px 10px;
+    box-shadow: var(--shadow);
+    padding: 2rem 0;
+}
+.site-title a { color: white; font-weight: 700; }
+.site-subtitle { color: rgba(255, 255, 255, 0.85); }
+
+/* 导航栏美化 */
+.header-nav { background: white; border-radius: 10px; box-shadow: var(--shadow); padding: 0.8rem; margin-top: 1rem; }
+.header-nav a { color: var(--dark); font-weight: 500; padding: 0.5rem 1.2rem; border-radius: 20px; }
+.header-nav a:hover { background: var(--primary); color: white; }
+
+/* 主内容区卡片效果 */
+.content-wrap, .archive-post, .post-block, .file-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: none;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.content-wrap:hover, .archive-post:hover, .file-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* 文件库特定美化 (复用卡片样式) */
+.file-library .header {
+    border-radius: 12px;
+    overflow: hidden;
+}
+.file-card .file-header { background-color: rgba(52, 152, 219, 0.1); }
+.file-card .file-footer .btn { border-radius: 6px; font-weight: 600; }
+
+/* 按钮美化 */
+.btn, .upload-btn, .filter-btn, .file-footer .btn {
+    border-radius: 25px !important;
+    font-weight: 600;
+    transition: all 0.3s !important;
+    border: none !important;
+}
+.btn-primary, .upload-btn, .btn-preview { background: linear-gradient(to right, var(--primary), #2980b9) !important; }
+.btn-primary:hover, .upload-btn:hover { background: linear-gradient(to right, #2980b9, var(--primary)) !important; transform: scale(1.05); }
+
+/* 页脚美化 */
+.footer { 
+    background: var(--dark); 
+    color: white; 
+    padding: 2rem 0; 
+    margin-top: 3rem;
+    text-align: center;
+    border-radius: 10px 10px 0 0;
+}
